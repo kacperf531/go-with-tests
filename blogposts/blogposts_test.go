@@ -8,6 +8,13 @@ import (
 	"github.com/kacperf531/blogposts"
 )
 
+func assertPost(t *testing.T, got blogposts.Post, want blogposts.Post) {
+	t.Helper()
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("got %+v, want %+v", got, want)
+	}
+}
+
 func TestNewBlogPosts(t *testing.T) {
 	fs := fstest.MapFS{
 		"hello world.md":  {Data: []byte("Title: Post 1")},
@@ -24,10 +31,5 @@ func TestNewBlogPosts(t *testing.T) {
 		t.Errorf("got %d posts, wanted %d posts", len(posts), len(fs))
 	}
 
-	got := posts[0]
-	want := blogposts.Post{Title: "Post 1"}
-
-	if !reflect.DeepEqual(got, want) {
-		t.Errorf("got %+v, want %+v", got, want)
-	}
+	assertPost(t, posts[0], blogposts.Post{Title: "Post 1"})
 }
