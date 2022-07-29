@@ -18,9 +18,11 @@ func assertPost(t *testing.T, got blogposts.Post, want blogposts.Post) {
 func TestNewBlogPosts(t *testing.T) {
 	const (
 		firstBody = `Title: Post 1
-Description: Description 1`
+Description: Description 1
+Tags: tdd, go`
 		secondBody = `Title: Post 2
-Description: Description 2`
+Description: Description 2
+Tags: rust, borrow-checker`
 	)
 
 	fs := fstest.MapFS{
@@ -37,10 +39,10 @@ Description: Description 2`
 	if len(posts) != len(fs) {
 		t.Errorf("got %d posts, wanted %d posts", len(posts), len(fs))
 	}
-
+	// rest of test code cut for brevity
 	assertPost(t, posts[0], blogposts.Post{
 		Title:       "Post 1",
 		Description: "Description 1",
+		Tags:        []string{"tdd", "go"},
 	})
-
 }
