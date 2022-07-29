@@ -4,7 +4,7 @@ import (
 	"testing"
 	"testing/fstest"
 
-	blogposts "github.com/kacperf531/go-with-tests/reading_files"
+	"github.com/kacperf531/blogposts"
 )
 
 func TestNewBlogPosts(t *testing.T) {

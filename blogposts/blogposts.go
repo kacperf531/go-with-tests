@@ -1,8 +1,6 @@
 package blogposts
 
-import (
-	"io/fs"
-)
+import "io/fs"
 
 type Post struct {
 }
