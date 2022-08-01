@@ -4,6 +4,7 @@ import (
 	"embed"
 	"html/template"
 	"io"
+	"strings"
 
 	"github.com/gomarkdown/markdown"
 	"github.com/gomarkdown/markdown/parser"
@@ -12,6 +13,11 @@ import (
 type Post struct {
 	Title, Description, Body string
 	Tags                     []string
+}
+
+// SanitisedTitle returns the title of the post with spaces replaced by dashes for pleasant URLs
+func (p Post) SanitisedTitle() string {
+	return strings.ToLower(strings.Replace(p.Title, " ", "-", -1))
 }
 
 var (
@@ -30,13 +36,15 @@ func NewPostRenderer() (*PostRenderer, error) {
 		return nil, err
 	}
 
-	parser := parser.New()
-
-	return &PostRenderer{templ: templ, mdParser: parser}, nil
+	return &PostRenderer{templ: templ}, nil
 }
 
 func (r *PostRenderer) Render(w io.Writer, p Post) error {
 	return r.templ.ExecuteTemplate(w, "blog.gohtml", newPostVM(p, r))
+}
+
+func (r *PostRenderer) RenderIndex(w io.Writer, posts []Post) error {
+	return r.templ.ExecuteTemplate(w, "index.gohtml", posts)
 }
 
 type postViewModel struct {
